@@ -1,0 +1,89 @@
+// personal count.cpp: определяет точку входа для консольного приложения.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>;
+#include <vector>
+using namespace std;
+
+bool count_start = true;
+double e, summ_of_purchase;
+int n = 0;
+string history_string;
+vector<double>list_of_summ_purchase(n);
+vector<string>history(n);
+
+
+double refill(double count_zero)
+{
+	cout << "Введите сумму, на которую хотите пополнить Ваш баланс" << endl;
+	cin >> e;
+	count_zero += e;
+	cout << "Сумма на Вашем счету = " << count_zero << endl;
+	return count_zero;
+}
+
+
+double purchase(double count_zero)
+{
+	cout << "Введите сумму покупки:" << endl;
+	cin >> summ_of_purchase;
+	if (summ_of_purchase > count_zero)
+	{
+		cout << "Недостаточно средств" << endl;
+		return count_zero;
+	}
+	else
+	{
+		cout << "Введите наименование покупки" << endl;
+		count_zero -= summ_of_purchase;
+		cin >> history_string;
+		list_of_summ_purchase.push_back(summ_of_purchase);		
+		history.push_back(history_string);
+		n++;
+		cout << "На Вашем счету осталось " << count_zero << " рублей" << endl;
+		return count_zero;
+	}
+}
+
+void print_history()
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << "Товар: " << history[i] << ", цена: " << list_of_summ_purchase[i] << endl;
+	}
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	setlocale(LC_ALL, "Russian");
+	double count = 0;
+	char choice;
+	
+	while (count_start)
+	{
+		cout << "Выберите пункт меню" << endl;
+		cout << "1. Пополнение счета" << endl;
+		cout << "2. Покупка" << endl;
+		cout << "3. История покупок" << endl;
+		cout << "4. Выход" << endl;
+		cin >> choice;
+		if (choice == '1')
+			count = refill(count);
+		else if(choice == '2')
+			count = purchase(count);
+		else if (choice == '3')
+			print_history();
+		else if (choice == '4')
+		{
+			count_start = false;
+			break;
+		}
+		else
+			cout << "Неверный пункт меню." << endl;
+	}
+	
+	system("pause");
+	return 0;
+}
